@@ -1,9 +1,12 @@
-import { useFrame, useLoader } from "@react-three/fiber";
+import { useLoader, useThree } from "@react-three/fiber";
 import React, { useRef } from "react";
-import { Mesh, TextureLoader } from "three";
+import { TextureLoader, Vector3, Mesh } from "three";
+import { a, useSpring } from "@react-spring/three";
+import { useGesture } from "@use-gesture/react";
 
 function Earth() {
-  console.log("render");
+  const { size, viewport } = useThree();
+  const aspect = size.width / viewport.width;
   const earthRef = useRef<Mesh>(null!);
   const maploader = useLoader(
     TextureLoader,
@@ -17,15 +20,21 @@ function Earth() {
     TextureLoader,
     "https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthspec1k.jpg"
   );
-  useFrame(() => {
-    if (earthRef.current) {
-      earthRef.current.rotation.x += 0.005;
-    }
-  });
-  
 
+  const [style, set] = useSpring<{ rotation: Vector3; position: Vector3 }>(
+    () => ({
+      rotation: [0, 0, 0],
+      position: [0, 0, 0],
+    })
+  );
+
+  const bind = useGesture({
+    onDrag: ({ offset: [x, y] }) => {
+      set.start({ rotation: [-x / aspect, y / aspect, 0] });
+    },
+  });
   return (
-    <mesh position={[0, 0, 0]} ref={earthRef}>
+    <a.mesh ref={earthRef} {...style} {...bind()}>
       <sphereGeometry args={[5, 360, 360]} />
       <meshPhongMaterial
         emissive={"#000000"}
@@ -33,7 +42,7 @@ function Earth() {
         bumpMap={bumpTexture}
         specularMap={specularTexture}
       />
-    </mesh>
+    </a.mesh>
   );
 }
 

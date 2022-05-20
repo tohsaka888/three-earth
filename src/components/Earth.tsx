@@ -22,10 +22,11 @@ function Earth() {
       earthRef.current.rotation.x += 0.005;
     }
   });
+  
 
   return (
     <mesh position={[0, 0, 0]} ref={earthRef}>
-      <sphereGeometry args={[5, 64, 64]} />
+      <sphereGeometry args={[5, 360, 360]} />
       <meshPhongMaterial
         emissive={"#000000"}
         map={maploader}

@@ -21,7 +21,7 @@ function Earth() {
     "https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthspec1k.jpg"
   );
 
-  const [style, set] = useSpring<{ rotation: Vector3; position: Vector3 }>(
+  const [style, set] = useSpring(
     () => ({
       rotation: [0, 0, 0],
       position: [0, 0, 0],

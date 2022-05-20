@@ -1,6 +1,6 @@
 import { useLoader, useThree } from "@react-three/fiber";
 import React, { useRef } from "react";
-import { TextureLoader, Vector3, Mesh } from "three";
+import { TextureLoader, Mesh } from "three";
 import { a, useSpring } from "@react-spring/three";
 import { useGesture } from "@use-gesture/react";
 

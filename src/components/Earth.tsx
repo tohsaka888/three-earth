@@ -5,24 +5,32 @@ import { Mesh, TextureLoader } from "three";
 function Earth() {
   console.log("render");
   const earthRef = useRef<Mesh>(null!);
-  const loader = useLoader(
+  const maploader = useLoader(
     TextureLoader,
-    "https://img-blog.csdnimg.cn/20200630214117533.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzE4NDIwNjQx,size_16,color_FFFFFF,t_70"
+    "https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthmap1k.jpg"
+  );
+  const bumpTexture = useLoader(
+    TextureLoader,
+    "https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthbump1k.jpg"
+  );
+  const specularTexture = useLoader(
+    TextureLoader,
+    "https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthspec1k.jpg"
   );
   useFrame(() => {
     if (earthRef.current) {
-      earthRef.current.rotation.x += 0.01;
+      earthRef.current.rotation.x += 0.005;
     }
   });
 
   return (
     <mesh position={[0, 0, 0]} ref={earthRef}>
       <sphereGeometry args={[5, 64, 64]} />
-      <meshStandardMaterial
-        emissive={"#000"}
-        metalness={0.5}
-        roughness={0.5}
-        map={loader}
+      <meshPhongMaterial
+        emissive={"#000000"}
+        map={maploader}
+        bumpMap={bumpTexture}
+        specularMap={specularTexture}
       />
     </mesh>
   );

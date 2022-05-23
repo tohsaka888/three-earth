@@ -28,16 +28,16 @@ function Earth() {
     })
   );
 
-  const bind = useGesture({
+  const bind: any = useGesture({
     onDrag: ({ offset: [x, y] }) => {
       set.start({ rotation: [-x / aspect, y / aspect, 0] });
     },
   });
   return (
-    <a.mesh ref={earthRef} {...style} {...bind()}>
+    <a.mesh ref={earthRef} {...style}  {...bind()} receiveShadow={true} castShadow={true}>
       <sphereGeometry args={[5, 360, 360]} />
       <meshPhongMaterial
-        emissive={"#000000"}
+        // emissive={"#7c7c7c"}
         map={maploader}
         bumpMap={bumpTexture}
         specularMap={specularTexture}
